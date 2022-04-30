@@ -1,6 +1,7 @@
 package dev.adriangrzebyk.sfgbeermicro.web.service;
 
 import dev.adriangrzebyk.sfgbeermicro.web.model.BeerDto;
+import dev.adriangrzebyk.sfgbeermicro.web.model.BeerStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class BeerServiceImpl implements BeerService {
 
 	@Override
 	public BeerDto getBeerById(UUID beerId) {
-		return new BeerDto(UUID.randomUUID(), "Galaxy Cat", "Pale Ale", 0L);
+		return new BeerDto(UUID.randomUUID(), "Galaxy Cat", BeerStyle.PALE_ALE, 0L);
 	}
 
 	@Override
