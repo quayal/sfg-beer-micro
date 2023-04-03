@@ -1,5 +1,7 @@
 package dev.adriangrzebyk.sfgbeermicro.web.model;
 
+import org.springframework.lang.NonNull;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -7,11 +9,11 @@ import java.util.UUID;
 public class BeerDto {
 	private UUID id;
 	private int version;
-	private OffsetDateTime created;
-	private OffsetDateTime modified;
 	private String beerName;
 	private BeerStyle beerStyle;
 	private long upc;
+	private OffsetDateTime created;
+	private OffsetDateTime modified;
 	private BigDecimal price;
 
 	public BeerDto() {

@@ -2,14 +2,17 @@ package dev.adriangrzebyk.sfgbeermicro.web.controller;
 
 import dev.adriangrzebyk.sfgbeermicro.web.model.BeerDto;
 import dev.adriangrzebyk.sfgbeermicro.web.service.BeerService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("/api/v1/beer")
+@RequestMapping("/api/v1/beer/")
 @RestController
 public class BeerController {
 
@@ -19,9 +22,15 @@ public class BeerController {
 		this.beerService = beerService;
 	}
 
-	@GetMapping("/{beerId}")
+	@GetMapping("{beerId}")
 	public ResponseEntity<BeerDto> getBeer(@PathVariable("beerId") UUID beerId) {
 		return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
+	}
+
+	@GetMapping
+	public void acceptParamList(@RequestParam("BeerList") String list) {
+		List<String> beers = Arrays.stream(list.split(",")).toList();
+		System.out.println(beers);
 	}
 
 	@PostMapping
@@ -32,13 +41,13 @@ public class BeerController {
 		return new ResponseEntity<>(headers, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/{beerId}")
+	@PutMapping("{beerId}")
 	public ResponseEntity<BeerDto> updateBeer(@PathVariable("beerId") UUID beerId, @RequestBody BeerDto beerDto) {
 		beerService.updateBeer(beerId, beerDto);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@DeleteMapping("/{beerId}")
+	@DeleteMapping("{beerId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteBeer(@PathVariable("beerId") UUID beerId) {
 		beerService.deleteBeer(beerId);

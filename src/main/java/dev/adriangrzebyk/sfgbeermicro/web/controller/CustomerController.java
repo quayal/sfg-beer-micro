@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RequestMapping("/api/v1/customer")
+@RequestMapping("/api/v1/customer/")
 @RestController
 public class CustomerController {
 	private final CustomerService customerService;
@@ -18,7 +18,7 @@ public class CustomerController {
 		this.customerService = customerService;
 	}
 
-	@GetMapping("/{customerId}")
+	@GetMapping("{customerId}")
 	public ResponseEntity<CustomerDto> getCustomer(@PathVariable("customerId") UUID id) {
 		return new ResponseEntity<>(customerService.getCustomerById(id), HttpStatus.OK);
 	}
@@ -27,17 +27,17 @@ public class CustomerController {
 	public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto) {
 		CustomerDto saved = customerService.saveCustomer(customerDto);
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Location", "/api/v1/customers/" + saved.getId());
+		headers.add("Location", "/api/v1/customer/" + saved.getId());
 		return new ResponseEntity<>(headers, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/{customerId}")
+	@PutMapping("{customerId}")
 	public void updateCustomer(@PathVariable("customerId") UUID id, @RequestBody CustomerDto customerDto) {
 		customerService.updateCustomer(id, customerDto);
 	}
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{customerId}")
+	@DeleteMapping("{customerId}")
 	public void deleteCustomer(@PathVariable("customerId") UUID id) {
 		customerService.deleteCustomer(id);
 	}
