@@ -3,7 +3,9 @@ package dev.adriangrzebyk.sfgbeermicro.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.adriangrzebyk.sfgbeermicro.web.model.BeerDto;
 import dev.adriangrzebyk.sfgbeermicro.web.model.BeerStyle;
+import dev.adriangrzebyk.sfgbeermicro.web.model.CustomerDto;
 import dev.adriangrzebyk.sfgbeermicro.web.service.BeerService;
+import dev.adriangrzebyk.sfgbeermicro.web.service.CustomerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,31 +20,31 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-@WebMvcTest(BeerController.class)
-class BeerControllerTest {
+@WebMvcTest(CustomerController.class)
+class CustomerControllerTest {
 
-	private static final String url = "/api/v1/beer/";
+	private static final String url = "/api/v1/customer/";
 
 	@Autowired
 	MockMvc mockMvc;
 	@Autowired
 	ObjectMapper objectMapper;
 	@MockBean
-	BeerService beerService;
+	CustomerService customerService;
 
 	@Test
-	void getBeer() throws Exception {
+	void getCustomer() throws Exception {
 		mockMvc.perform(get( url + UUID.randomUUID()).accept(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	@Test
-	void saveBeer() throws Exception {
-		BeerDto beerDto = new BeerDto(null, "New Beer", BeerStyle.PALE_ALE, 101L);
-		BeerDto savedBeerDto = new BeerDto(UUID.randomUUID(), "New Beer", BeerStyle.PALE_ALE, 101L);
-		String beerDtoJson = objectMapper.writeValueAsString(beerDto);
+	void saveCustomer() throws Exception {
+		CustomerDto customerDto = new CustomerDto(null, "Will Riker");
+		CustomerDto savedCustomerDto = new CustomerDto(UUID.randomUUID(), "Will Riker");
+		String beerDtoJson = objectMapper.writeValueAsString(customerDto);
 
-		when(beerService.saveNewBeer(any(BeerDto.class))).thenReturn(savedBeerDto);
+		when(customerService.saveCustomer(any(CustomerDto.class))).thenReturn(savedCustomerDto);
 
 		mockMvc.perform(post(url)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -51,24 +53,25 @@ class BeerControllerTest {
 	}
 
 	@Test
-	void updateBeer() throws Exception {
-		BeerDto beerDto = new BeerDto(null, "Galaxy Cat", BeerStyle.PALE_ALE, 102L);
-		String beerDtoJson = objectMapper.writeValueAsString(beerDto);
+	void updateCustomer() throws Exception {
+		CustomerDto customerDto = new CustomerDto(UUID.randomUUID(), "Will Riker");
+		String customerDtoJson = objectMapper.writeValueAsString(customerDto);
 
 		mockMvc.perform(put(url + UUID.randomUUID())
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(beerDtoJson))
+				.content(customerDtoJson))
 				.andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 
 	@Test
 	void shouldReturnBadRequest() throws Exception {
-		BeerDto beerDto = new BeerDto(UUID.randomUUID(), "Galaxy Cat", BeerStyle.PALE_ALE, 102L);
-		String beerDtoJson = objectMapper.writeValueAsString(beerDto);
+		CustomerDto customerDto = new CustomerDto(null,
+				"ThisIsANameThatIsLongerThanHundredCharactersThisIsANameThatIsLongerThanHundredCharactersThisIsANameThatIsLongerThanHundredCharacters");
+		String customerDtoJson = objectMapper.writeValueAsString(customerDto);
 
 		mockMvc.perform(post(url)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(beerDtoJson))
+				.content(customerDtoJson))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 }

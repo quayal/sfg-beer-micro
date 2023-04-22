@@ -1,5 +1,8 @@
 package dev.adriangrzebyk.sfgbeermicro.web.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Positive;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
@@ -7,10 +10,13 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 public class BeerDto {
+	@Null
 	private UUID id;
 	private int version;
+	@NotBlank
 	private String beerName;
 	private BeerStyle beerStyle;
+	@Positive
 	private long upc;
 	private OffsetDateTime created;
 	private OffsetDateTime modified;

@@ -2,11 +2,15 @@ package dev.adriangrzebyk.sfgbeermicro.web.controller;
 
 import dev.adriangrzebyk.sfgbeermicro.web.model.CustomerDto;
 import dev.adriangrzebyk.sfgbeermicro.web.service.CustomerService;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/customer/")
@@ -24,7 +28,7 @@ public class CustomerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto) {
+	public ResponseEntity<CustomerDto> createCustomer(@Validated @RequestBody CustomerDto customerDto) {
 		CustomerDto saved = customerService.saveCustomer(customerDto);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Location", "/api/v1/customer/" + saved.getId());
@@ -32,8 +36,9 @@ public class CustomerController {
 	}
 
 	@PutMapping("{customerId}")
-	public void updateCustomer(@PathVariable("customerId") UUID id, @RequestBody CustomerDto customerDto) {
+	public ResponseEntity<CustomerDto> updateCustomer(@PathVariable("customerId") UUID id, @RequestBody CustomerDto customerDto) {
 		customerService.updateCustomer(id, customerDto);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@ResponseStatus(HttpStatus.NO_CONTENT)
