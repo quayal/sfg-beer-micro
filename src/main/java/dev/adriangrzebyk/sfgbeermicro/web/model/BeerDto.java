@@ -1,9 +1,9 @@
 package dev.adriangrzebyk.sfgbeermicro.web.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Positive;
-import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -12,14 +12,19 @@ import java.util.UUID;
 public class BeerDto {
 	@Null
 	private UUID id;
-	private int version;
+	@Null
+	private Integer version;
 	@NotBlank
 	private String beerName;
+	@NotNull
 	private BeerStyle beerStyle;
 	@Positive
+	@NotNull
 	private long upc;
 	private OffsetDateTime created;
 	private OffsetDateTime modified;
+	@Positive
+	@NotNull
 	private BigDecimal price;
 
 	public BeerDto() {
@@ -29,11 +34,12 @@ public class BeerDto {
 		this.id = id;
 	}
 
-	public BeerDto(UUID id, String beerName, BeerStyle beerStyle, long upc) {
+	public BeerDto(UUID id, String beerName, BeerStyle beerStyle, long upc, BigDecimal price) {
 		this.id = id;
 		this.beerName = beerName;
 		this.beerStyle = beerStyle;
 		this.upc = upc;
+		this.price = price;
 	}
 
 	public BeerDto(UUID id, int version, OffsetDateTime created, OffsetDateTime modified, String beerName,
@@ -54,6 +60,22 @@ public class BeerDto {
 
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 
 	public String getBeerName() {

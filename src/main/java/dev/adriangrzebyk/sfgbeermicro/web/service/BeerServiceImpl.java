@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
@@ -14,7 +15,7 @@ public class BeerServiceImpl implements BeerService {
 
 	@Override
 	public BeerDto getBeerById(UUID beerId) {
-		return new BeerDto(UUID.randomUUID(), "Galaxy Cat", BeerStyle.PALE_ALE, 0L);
+		return new BeerDto(UUID.randomUUID(), "Galaxy Cat", BeerStyle.PALE_ALE, 0L, new BigDecimal("21.37"));
 	}
 
 	@Override

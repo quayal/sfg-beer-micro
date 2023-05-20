@@ -4,6 +4,7 @@ import dev.adriangrzebyk.sfgbeermicro.web.model.BeerDto;
 import dev.adriangrzebyk.sfgbeermicro.web.service.BeerService;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.constraints.NotNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Validated
 @RequestMapping("/api/v1/beer/")
 @RestController
@@ -40,6 +42,7 @@ public class BeerController {
 
     @PostMapping
     public ResponseEntity<BeerDto> saveBeer(@Validated @RequestBody BeerDto beerDto) {
+        log.debug("in handle post... ");
         BeerDto savedDto = beerService.saveNewBeer(beerDto);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedDto.getId().toString());
